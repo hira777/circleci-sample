@@ -1,20 +1,37 @@
 # CircleCIのバージョン
 version: 2
-# 実行処理
-jobs:
-  # job が1つだけの場合、job 名は`build`でなければならない
-  build:
+
+# job の実行環境を定義
+executors:
+  # Executors の名前（任意で OK）
+  default:
+    # steps を実行するディレクトリ
+    working_directory: ~/repo
     # job の実行環境で Dodcker を利用する
     docker:
       # 利用する Docker イメージ
       # 今回は CircleCI が提供している https://circleci.com/docs/2.0/circleci-images/#nodejs
       # 利用できる version（tag）は https://circleci.com/docs/2.0/docker-image-tags.json
       - image: circleci/node:12.11.1
-    # steps を実行するディレクトリ
-    working_directory: ~/repo
+
+# job で再利用できる steps の定義
+commands:
+  # Commands の名前（任意で OK）
+  npm_run:
+    description: "npm scripts を実行する"
+    # job の実行環境で実行される処理
+    steps:
+      - run: npm run test
+      - run: npm run deploy
+
+# 実行処理
+jobs:
+  # job の名前。job が１つだけの場合、job 名は`build`でなければならない
+  build:
+    executor: default
+    # job の実行環境で実行される処理
     steps:
       # working_directory にチェックアウトする
       # 今回の場合、`package.json` が job の実行環境の`~/repo`にチェックアウト（保存）される
       - checkout
-      - run: npm run test
-      - run: npm run deploy
+      - npm_run
