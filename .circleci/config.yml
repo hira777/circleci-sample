@@ -1,5 +1,5 @@
 # CircleCIのバージョン
-version: 2
+version: 2.1
 
 # job の実行環境を定義
 executors:
