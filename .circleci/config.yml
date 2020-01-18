@@ -7,7 +7,7 @@ executors:
   default:
     # steps を実行するディレクトリ
     working_directory: ~/repo
-    # job の実行環境で Dodcker を利用する
+    # job の実行環境で Docker を利用する
     docker:
       # 利用する Docker イメージ
       # 今回は CircleCI が提供している https://circleci.com/docs/2.0/circleci-images/#nodejs
